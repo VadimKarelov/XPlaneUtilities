@@ -13,50 +13,40 @@ namespace XplaneUtils
 {
     public partial class Form1 : Form
     {
+        Task showErrorsTask;
+
         public Form1()
         {
             InitializeComponent();
         }
 
-        private void ShowErrorsList(object sender, EventArgs e)
+        private void CheckThreads_Tick(object sender, EventArgs e)
         {
-            button_ErrorsList.Enabled = false;
-            label_Warning.Text = "Поиск ошибок инициирован";
-            try
+            if (showErrorsTask != null && showErrorsTask.IsCompleted)
             {
-                StreamReader strR = new StreamReader("Log.txt", Encoding.Default);
-                List<string> errors = GetErrorsLines(strR.ReadToEnd());
-                strR.Close();
-                label_Warning.Text = "Файл считан";
-                ShowErrors(errors);
-                label_Warning.Text = "Успешно";
+                button_ErrorsList.Text = "Список ошибок";
+                button_ErrorsList.Enabled = true;
             }
-            catch
-            {
-                label_Warning.Text = "Убедитесь, что программа лежит в папке с игрой";
-            }
-            button_ErrorsList.Enabled = true;
         }
 
-        private List<string> GetErrorsLines(string file)
+        private void ShowErrorsList_Clicked(object sender, EventArgs e)
         {
-            string[] errorsExample = { "Failed to find resource" };
+            button_ErrorsList.Enabled = false;
+            button_ErrorsList.Text = "Поиск ошибок инициирован";
+            showErrorsTask = new Task(() => ShowErrorsList());
+            showErrorsTask.Start();
+        }
 
-            string[] lines = file.Split('\n');
-            List<string> errors = new List<string>();
-
-            foreach (string line in lines)
+        private void ShowErrorsList()
+        {            
+            try
             {
-                foreach (string errorEx in errorsExample)
-                {
-                    if (line.Contains(errorEx))
-                    {
-                        errors.Add(line);
-                    }
-                }
+                ShowErrors(XPU.GetErrors());
             }
-
-            return errors;
+            catch (FileNotFoundException)
+            {
+                MessageBox.Show("Пожалуйста, убедитесь, что программа лежит в папке с игрой!");
+            }
         }
 
         private void ShowErrors(List<string> errors)
