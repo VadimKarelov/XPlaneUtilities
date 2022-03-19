@@ -32,6 +32,7 @@
             this.button_ErrorsList = new System.Windows.Forms.Button();
             this.button_SceneryPacks = new System.Windows.Forms.Button();
             this.timer_CheckThreads = new System.Windows.Forms.Timer(this.components);
+            this.button_ShadowEnhancement = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button_ErrorsList
@@ -62,11 +63,23 @@
             this.timer_CheckThreads.Interval = 1;
             this.timer_CheckThreads.Tick += new System.EventHandler(this.CheckThreads_Tick);
             // 
+            // button_ShadowEnhancement
+            // 
+            this.button_ShadowEnhancement.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button_ShadowEnhancement.Location = new System.Drawing.Point(12, 184);
+            this.button_ShadowEnhancement.Name = "button_ShadowEnhancement";
+            this.button_ShadowEnhancement.Size = new System.Drawing.Size(200, 80);
+            this.button_ShadowEnhancement.TabIndex = 0;
+            this.button_ShadowEnhancement.Text = "Улучшить тени";
+            this.button_ShadowEnhancement.UseVisualStyleBackColor = true;
+            this.button_ShadowEnhancement.Click += new System.EventHandler(this.ShadowEnhancement_Clicked);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(217, 191);
+            this.ClientSize = new System.Drawing.Size(220, 270);
+            this.Controls.Add(this.button_ShadowEnhancement);
             this.Controls.Add(this.button_SceneryPacks);
             this.Controls.Add(this.button_ErrorsList);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -81,6 +94,7 @@
         private System.Windows.Forms.Button button_ErrorsList;
         private System.Windows.Forms.Button button_SceneryPacks;
         private System.Windows.Forms.Timer timer_CheckThreads;
+        private System.Windows.Forms.Button button_ShadowEnhancement;
     }
 }
 
