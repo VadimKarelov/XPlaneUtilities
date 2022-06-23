@@ -1,0 +1,70 @@
+﻿<Window x:Class="XPlaneUtilsWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:XPlaneUtilsWPF"
+        mc:Ignorable="d"
+        Title="XPU" Height="300" Width="400" FontSize="16" Background="AntiqueWhite">
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Button">
+
+                <Setter Property="Margin" Value="10,10,10,10"/>
+                
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="15"
+                                Background="{TemplateBinding Background}">
+
+                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+                <Style.Triggers>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Effect">
+                            <Setter.Value>
+                                <DropShadowEffect BlurRadius="10" ShadowDepth="5"/>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger>
+                </Style.Triggers>
+
+            </Style>
+            
+        </ResourceDictionary>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal">
+            <Button Click="SetPath_Click">
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <Image Source="\Resources\fileIcon.png" MaxHeight="20"/>
+                    <TextBlock Text="Путь" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            <TextBlock x:Name="tb_Path" Text="D:\" VerticalAlignment="Center"/>
+        </StackPanel>
+        <Button Grid.Row="1" Click="ShowErrors_Click">
+            <TextBlock Text="Показать список ошибок"/>
+        </Button>
+        <Button Grid.Row="2">
+            <TextBlock Text="Сортировка scenery_pack.ini"/>
+        </Button>
+        <Button Grid.Row="3">
+            <TextBlock Text="Настройки теней"/>
+        </Button>
+    </Grid>
+</Window>
