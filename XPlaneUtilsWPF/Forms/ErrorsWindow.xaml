@@ -1,0 +1,29 @@
+﻿<Window x:Class="XPlaneUtilsWPF.Forms.ErrorsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:XPlaneUtilsWPF.Forms"
+        mc:Ignorable="d"
+        Title="Список ошибок" Height="400" Width="500" Style="{StaticResource defaultWindow}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Button" BasedOn="{StaticResource defaultButton}"/>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <Button MinWidth="120" Click="LoadErrors_Click">
+                <TextBlock Text="Загрузить"/>
+            </Button>
+        </StackPanel>
+
+        <ListBox x:Name="listBox_ErrorsList" Grid.Row="1"/>
+    </Grid>
+</Window>

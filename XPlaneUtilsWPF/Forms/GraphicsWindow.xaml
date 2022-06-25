@@ -1,0 +1,32 @@
+﻿<Window x:Class="XPlaneUtilsWPF.Forms.GraphicsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:XPlaneUtilsWPF.Forms"
+        mc:Ignorable="d"
+        Title="Графика" Height="400" Width="500" Style="{StaticResource defaultWindow}">
+    <Window.Resources>
+        <Style TargetType="Button" BasedOn="{StaticResource defaultButton}"/>
+    </Window.Resources>
+    
+    <Grid Margin="20">
+        <Border>
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="Разрешение теней:"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>                    
+                    
+                    <Slider Grid.Column="0" x:Name="sl_ShadowRes" Ticks="512,1024,2048,4096,8192" TickPlacement="BottomRight" Minimum="512" Maximum="8192" IsSnapToTickEnabled="True"/>
+                    <TextBlock Grid.Column="1" Text="{Binding ElementName=sl_ShadowRes, Path=Value, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+                <Button Click="ChangeShadowResolution_Click">
+                    <TextBlock Text="Сохранить"/>
+                </Button>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

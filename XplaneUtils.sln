@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XplaneUtils", "XplaneUtils\XplaneUtils.csproj", "{7CE739C0-5FEF-4E69-9EDC-7CFE083B8A32}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XPUUpdater", "XPUUpdater\XPUUpdater.csproj", "{D1167ED5-BAA6-4720-9973-3ACE8248D325}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XPlaneUtilsWPF", "XPlaneUtilsWPF\XPlaneUtilsWPF.csproj", "{ED51F6F2-F69C-4317-A246-1819A43BD323}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7CE739C0-5FEF-4E69-9EDC-7CFE083B8A32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7CE739C0-5FEF-4E69-9EDC-7CFE083B8A32}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7CE739C0-5FEF-4E69-9EDC-7CFE083B8A32}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7CE739C0-5FEF-4E69-9EDC-7CFE083B8A32}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D1167ED5-BAA6-4720-9973-3ACE8248D325}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D1167ED5-BAA6-4720-9973-3ACE8248D325}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D1167ED5-BAA6-4720-9973-3ACE8248D325}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D1167ED5-BAA6-4720-9973-3ACE8248D325}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED51F6F2-F69C-4317-A246-1819A43BD323}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED51F6F2-F69C-4317-A246-1819A43BD323}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED51F6F2-F69C-4317-A246-1819A43BD323}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED51F6F2-F69C-4317-A246-1819A43BD323}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
