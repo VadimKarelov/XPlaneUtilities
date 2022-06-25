@@ -5,36 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:XPlaneUtilsWPF.Forms"
         mc:Ignorable="d"
-        Title="Список ошибок" Height="400" Width="500" FontSize="16" Background="AntiqueWhite">
+        Title="Список ошибок" Height="400" Width="500" Style="{StaticResource defaultWindow}">
     <Window.Resources>
         <ResourceDictionary>
-            <Style TargetType="Button">
-
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Button">
-                            <Border CornerRadius="15"
-                                Background="{TemplateBinding Background}">
-
-                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-
-                <Style.Triggers>
-                    <Trigger Property="IsPressed" Value="True">
-                        <Setter Property="Effect">
-                            <Setter.Value>
-                                <DropShadowEffect BlurRadius="10" ShadowDepth="5"/>
-                            </Setter.Value>
-                        </Setter>
-                    </Trigger>
-                </Style.Triggers>
-
-            </Style>
-
+            <Style TargetType="Button" BasedOn="{StaticResource defaultButton}"/>
         </ResourceDictionary>
     </Window.Resources>
 

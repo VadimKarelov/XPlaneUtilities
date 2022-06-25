@@ -43,7 +43,11 @@ namespace XPlaneUtilsWPF
                 {
                     if (line.Contains(errorEx))
                     {
-                        errors.Add(line);
+                        string t = line.Replace("\r", "").Replace("\n", "");
+                        if (errors.IndexOf(t) == -1)
+                        {
+                            errors.Add(t);
+                        }
                     }
                 }
             }
