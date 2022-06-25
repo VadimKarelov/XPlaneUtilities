@@ -19,7 +19,7 @@
         </Grid.RowDefinitions>
         
         <StackPanel Orientation="Horizontal" Grid.Row="0">
-            <Button MinHeight="40" MinWidth="120" Click="LoadErrors_Click">
+            <Button MinWidth="120" Click="LoadErrors_Click">
                 <TextBlock Text="Загрузить"/>
             </Button>
         </StackPanel>

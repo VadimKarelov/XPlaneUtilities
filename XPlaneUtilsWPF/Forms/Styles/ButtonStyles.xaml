@@ -3,6 +3,8 @@
                     xmlns:local="clr-namespace:XPlaneUtilsWPF">    
     <Style TargetType="Button" x:Key="defaultButton">
 
+        <Setter Property="MinHeight" Value="40"/>
+
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">

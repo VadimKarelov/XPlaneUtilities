@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
 namespace XPlaneUtilsWPF.Forms
 {
@@ -22,18 +10,12 @@ namespace XPlaneUtilsWPF.Forms
         public ErrorsWindow()
         {
             InitializeComponent();
+            LoadErrors_Click(new object(), new RoutedEventArgs());
         }
 
         private void LoadErrors_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                listBox_ErrorsList.ItemsSource = XPU.GetErrors();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            listBox_ErrorsList.ItemsSource = XPU.GetErrors();
         }
     }
 }

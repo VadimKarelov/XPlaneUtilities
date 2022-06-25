@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace XPlaneUtilsWPF
 {
@@ -73,7 +72,7 @@ namespace XPlaneUtilsWPF
         {
             string text = ReadFile(path);
 
-            StreamWriter strW = new StreamWriter(path + ".bak");
+            StreamWriter strW = new StreamWriter($"{path}.bak{DateTime.Now.ToShortDateString()}{DateTime.Now.ToLongTimeString().Replace(":","")}");
             strW.Write(text);
             strW.Close();
         }
@@ -87,6 +86,7 @@ namespace XPlaneUtilsWPF
             text = text.Replace("fbo/shadow_cam_size	1024", $"fbo/shadow_cam_size	{quality}");
             text = text.Replace("fbo/shadow_cam_size	2048", $"fbo/shadow_cam_size	{quality}");
             text = text.Replace("fbo/shadow_cam_size	4096", $"fbo/shadow_cam_size	{quality}");
+            text = text.Replace("fbo/shadow_cam_size	8192", $"fbo/shadow_cam_size	{quality}");
 
             StreamWriter strW = new StreamWriter(path);
             strW.Write(text);
