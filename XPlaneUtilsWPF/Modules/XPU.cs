@@ -94,6 +94,74 @@ namespace XPlaneUtilsWPF
         }
         #endregion
 
+        #region
+        public static void SortSceneryPack()
+        {
+            if (!IsXplaneRunning)
+            {
+                string path = @$"{RootPath}/Custom Scenery/scenery_packs.ini";
+                SortSP(path);
+            }
+            else
+                throw new Exception("X-Plane должен быть закрыт!");
+        }
+
+        private static void SortSP(string path)
+        {
+            string file = ReadFile(path);
+
+            List<Note> notes = GroupByCategories(SeparateLines(file));
+        }
+
+        private static List<string> SeparateLines(string file)
+        {
+            string[] symbols = { "\r", "\n" };
+
+            List<string> res = file.Split(symbols[0]).ToList();
+
+            for (int i = 1; i < symbols.Length; i++)
+            {
+                List<string> lines = new List<string>();
+                foreach (string s in res)
+                {
+                    lines.AddRange(s.Split(symbols[i]));
+                }
+                res = lines;
+            }
+
+            while (res.IndexOf("") != -1)
+            {
+                res.RemoveAt(res.IndexOf(""));
+            }
+
+            return res;
+        }
+
+        private static List<Note> GroupByCategories(List<string> lines)
+        {
+
+        }
+
+        private static void DefaultSceneries(List<string> lines, List<Note> notes)
+        {
+            string[] defaultSceneries = { };
+        }
+
+        class Note
+        {
+            public string Line { get; set; }
+            public SceneryCategory Category { get; set; }
+        }
+
+        enum SceneryCategory
+        {
+            Airport,
+            Library,
+            Landmark,
+            Mash
+        }
+        #endregion
+
         #region Работа с файлами
         private static string ReadFile(string path)
         {
