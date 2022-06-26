@@ -21,6 +21,8 @@ namespace XPlaneUtilsWPF.Modules.SortSceneryPack
 
         private static List<string> SeparateLines(string file)
         {
+            file = file.Remove(file.IndexOf(_fileHeader), _fileHeader.Length);
+
             string[] symbols = { "\r", "\n" };
 
             List<string> res = file.Split(symbols[0]).ToList();
@@ -48,7 +50,7 @@ namespace XPlaneUtilsWPF.Modules.SortSceneryPack
             string template = "SCENERY_PACK Custom Scenery/";
             string[] defaultAirports = { "Global Airports/"};
             string[] knownLibries = _defaultLibraries;
-            string[] knownMash = { "KSEA Demo Area/", "LOWI Demo Area/" };
+            string[] knownMesh = { "KSEA Demo Area/", "LOWI Demo Area/" };
 
             foreach (string dAirport in defaultAirports)
             {
@@ -74,18 +76,24 @@ namespace XPlaneUtilsWPF.Modules.SortSceneryPack
                 }
             }
 
-            foreach (string mash in knownMash)
+            foreach (string mesh in knownMesh)
             {
-                int ind = lines.IndexOf(template + mash);
+                int ind = lines.IndexOf(template + mesh);
 
                 while (ind != -1)
                 {
-                    sceneries.Add(new Scenery(lines[ind], SceneryType.Mash, SceneryPriority.Normal));
+                    sceneries.Add(new Scenery(lines[ind], SceneryType.Mesh, SceneryPriority.Low));
                     lines.RemoveAt(ind);
-                    ind = lines.IndexOf(template + mash);
+                    ind = lines.IndexOf(template + mesh);
                 }
             }
         }
+
+        private static string _fileHeader = @"I
+1000 Version
+SCENERY
+
+";
 
         private static string[] _defaultLibraries = {"000_Madagascar_Lib/",
 "3D_people_library/",
@@ -162,5 +170,21 @@ namespace XPlaneUtilsWPF.Modules.SortSceneryPack
 "Wrecked_Vehicles/",
 "XAirportScenery/",
 "XS_Library/"};
+
+        private static string[] _meshTemplates = {"z_",
+            "zz_",
+            "zzz_",
+            "Z_",
+            "ZZ_",
+            "ZZZ_"};
+
+        private static string[] _photoTemplates = {"Ortho",
+        "ortho",
+        "photo",
+        "Photo",
+        "PHOTO"};
+
+        private static string[] _osmTemplates = {"Landmarks",
+        "osm"};
     }
 }

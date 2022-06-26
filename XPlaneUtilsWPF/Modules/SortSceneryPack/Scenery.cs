@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace XPlaneUtilsWPF.Modules.SortSceneryPack
+﻿namespace XPlaneUtilsWPF.Modules.SortSceneryPack
 {
     internal class Scenery
     {
@@ -26,7 +20,7 @@ namespace XPlaneUtilsWPF.Modules.SortSceneryPack
         OSM,
         Library,
         PhotoSubstrate,
-        Mash
+        Mesh
     }
 
     internal enum SceneryPriority
