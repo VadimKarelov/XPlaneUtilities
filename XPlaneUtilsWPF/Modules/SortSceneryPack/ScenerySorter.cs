@@ -8,6 +8,9 @@ namespace XPlaneUtilsWPF.Modules.SortSceneryPack
 {
     internal static class ScenerySorter
     {
+        public static string[] UnsortedLines { get { return _unsorted; } }
+        private static string[] _unsorted;
+
         public static string SortFile(string file)
         {
             List<string> lines = SeparateLines(file);
@@ -16,14 +19,32 @@ namespace XPlaneUtilsWPF.Modules.SortSceneryPack
 
             FindDefaultAndKnownSceneries(lines, sceneries);
 
+            UseTemplates(lines, sceneries);  
 
+            SetDefault(lines, sceneries);
+
+            // check program working
+            if (lines.Count > 0)
+            {
+                throw new Exception("lines not empty");
+            }
+
+            return MakeFile(sceneries);
         }
+
+        private static string _template = "SCENERY_PACK Custom Scenery/";
+
+        private static string _fileHeader = @"I
+1000 Version
+SCENERY
+
+";
 
         private static List<string> SeparateLines(string file)
         {
-            file = file.Remove(file.IndexOf(_fileHeader), _fileHeader.Length);
+            file = file.Remove(0, file.IndexOf("SCENERY_PACK"));
 
-            string[] symbols = { "\r", "\n" };
+            string[] symbols = { "\r", "\n",};
 
             List<string> res = file.Split(symbols[0]).ToList();
 
@@ -47,144 +68,63 @@ namespace XPlaneUtilsWPF.Modules.SortSceneryPack
 
         private static void FindDefaultAndKnownSceneries(List<string> lines, List<Scenery> sceneries)
         {
-            string template = "SCENERY_PACK Custom Scenery/";
-            string[] defaultAirports = { "Global Airports/"};
-            string[] knownLibries = _defaultLibraries;
+            //string template = "SCENERY_PACK Custom Scenery/";
+            string[] defaultAirports = { "Global Airports/" };
+            string[] knownLibries = InformationHolder.DefaultLibraries;
             string[] knownMesh = { "KSEA Demo Area/", "LOWI Demo Area/" };
 
-            foreach (string dAirport in defaultAirports)
-            {
-                int ind = lines.IndexOf(template + dAirport);
+            UseRule(lines, sceneries, defaultAirports.ToList(), SceneryType.Airport, SceneryPriority.Low);
 
-                while (ind != -1)
-                {
-                    sceneries.Add(new Scenery(lines[ind], SceneryType.Airport, SceneryPriority.Low));
-                    lines.RemoveAt(ind);
-                    ind = lines.IndexOf(template + dAirport);
-                }
-            }
+            UseRule(lines, sceneries, knownLibries.ToList(), SceneryType.Library, SceneryPriority.Normal);
 
-            foreach (string lib in knownLibries)
-            {
-                int ind = lines.IndexOf(template + lib);
-
-                while (ind != -1)
-                {
-                    sceneries.Add(new Scenery(lines[ind], SceneryType.Library, SceneryPriority.Normal));
-                    lines.RemoveAt(ind);
-                    ind = lines.IndexOf(template + lib);
-                }
-            }
-
-            foreach (string mesh in knownMesh)
-            {
-                int ind = lines.IndexOf(template + mesh);
-
-                while (ind != -1)
-                {
-                    sceneries.Add(new Scenery(lines[ind], SceneryType.Mesh, SceneryPriority.Low));
-                    lines.RemoveAt(ind);
-                    ind = lines.IndexOf(template + mesh);
-                }
-            }
+            UseRule(lines, sceneries, knownMesh.ToList(), SceneryType.Mesh, SceneryPriority.Low);
         }
 
-        private static string _fileHeader = @"I
-1000 Version
-SCENERY
+        private static void UseTemplates(List<string> lines, List<Scenery> sceneries)
+        {
+            UseRule(lines, sceneries, InformationHolder.MeshTemplates.ToList(), SceneryType.Mesh, SceneryPriority.Normal);
+            UseRule(lines, sceneries, InformationHolder.PhotoTemplates.ToList(), SceneryType.PhotoSubstrate, SceneryPriority.Normal);
+            UseRule(lines, sceneries, InformationHolder.OSMTemplates.ToList(), SceneryType.OSM, SceneryPriority.Normal);
+        }
 
-";
+        private static void SetDefault(List<string> lines, List<Scenery> sceneries)
+        {
+            // clone
+            _unsorted = new List<string>(lines).ToArray();
+            string[] empty = { "" };
+            UseRule(lines, sceneries, empty.ToList(), SceneryType.Library, SceneryPriority.Low);
+        }
 
-        private static string[] _defaultLibraries = {"000_Madagascar_Lib/",
-"3D_people_library/",
-"ALES_DEV_LIB/",
-"AR_Library/",
-"BS2001 Object Library/",
-"CCVA022_Object_Library/",
-"CDB-Library/",
-"cemetery/",
-"CFXP - Static Aircraft Library/",
-"Europe_Library/",
-"Europe_Library_HD/",
-"Europe_RoadTraffic/",
-"european_vehicles_library_uwespeed/",
-"ff_library/",
-"ff_library_extended_LOD/",
-"FJS_Scenery_Library_v1.7/",
-"flags_of_the_world/",
-"flags_of_USA_states/",
-"FlyAgi_Vegetation/",
-"Flyby_Planes/",
-"forest/",
-"german_traffic_library/",
-"gt_library/",
-"ISDGLibrary/",
-"JB_Library/",
-"mada_bush_airfields/",
-"Madagascar_Forests/",
-"MisterX_Library/",
-"NAPS_library/",
-"OpenSceneryX/",
-"Orbx_OrbxlibsXP/",
-"People_LIB/",
-"pm_library/",
-"PPlibrary/",
-"PuF_Libs/",
-"R2_Library/",
-"RA_Library/",
-"RD_Library/",
-"RE_Library/",
-"RescueX_Lib/",
-"RescueX_Terrain/",
-"ruscenery/",
-"SAM_Library/",
-"Sea_Life/",
-"Serviced Aircraft Europe A320/",
-"Serviced Aircraft Europe A340/",
-"Serviced Aircraft Europe B737/",
-"Serviced Aircraft Europe B747/",
-"Serviced Aircraft North America Part 1/",
-"Serviced Aircraft North America Part 2/",
-"Serviced Aircraft North America Part 3/",
-"Serviced Aircraft World Part 1/",
-"Shoreline_Objects/",
-"Static_GA_Aircraft_Australia/",
-"Static_GA_Aircraft_NZ/",
-"Switchable Serviced Aircraft  A380/",
-"Switchable Serviced Aircraft Europe A320/",
-"Switchable Serviced Aircraft Europe B737/",
-"Switchable Serviced Aircraft Europe B747/",
-"Switchable Serviced Aircraft Europe Small/",
-"Switchable Serviced Aircraft North America Part 1/",
-"Switchable Serviced Aircraft North America Part 2/",
-"Switchable Serviced Aircraft North America Part 3/",
-"Switchable Serviced Aircraft World Part 1/",
-"TerraFloraXP/",
-"THE-FAIB Aircraft Library/",
-"THE-FRUIT-STAND Aircraft Library v3.0/",
-"The_Handy_Objects_Library/",
-"TM Library - Billboards HD vol 1 XP11/",
-"Vehicle Library Extension/",
-"Waves_Library/",
-"world-models/",
-"Wrecked_Vehicles/",
-"XAirportScenery/",
-"XS_Library/"};
+        /// <summary>
+        /// Ищет строки в lines еквивалентных ruleLines
+        /// </summary>
+        private static void UseRule(List<string> lines, List<Scenery> sceneries, List<string> ruleLines, SceneryType type, SceneryPriority priority)
+        {
+            foreach (string rule in ruleLines)
+            {
+                int ind = lines.IndexOf(_template + rule);
 
-        private static string[] _meshTemplates = {"z_",
-            "zz_",
-            "zzz_",
-            "Z_",
-            "ZZ_",
-            "ZZZ_"};
+                while (ind != -1)
+                {
+                    sceneries.Add(new Scenery(lines[ind], type, priority));
+                    lines.RemoveAt(ind);
+                    ind = lines.IndexOf(_template + rule);
+                }
+            }
+        } 
 
-        private static string[] _photoTemplates = {"Ortho",
-        "ortho",
-        "photo",
-        "Photo",
-        "PHOTO"};
+        private static string MakeFile(List<Scenery> sceneries)
+        {
+            sceneries = sceneries.OrderBy(x => x.Line).OrderBy(x => x.Priority).OrderBy(x => x.Type).ToList();
 
-        private static string[] _osmTemplates = {"Landmarks",
-        "osm"};
+            string resFile = _fileHeader;
+
+            foreach (Scenery scen in sceneries)
+            {
+                resFile += scen.Line;
+            }
+
+            return resFile;
+        }
     }
 }

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using XPlaneUtilsWPF.Modules.SortSceneryPack;
 
 namespace XPlaneUtilsWPF
 {
@@ -66,16 +67,7 @@ namespace XPlaneUtilsWPF
             }
             else
                 throw new Exception("X-Plane должен быть закрыт!");
-        }
-
-        private static void CreateBackupFile(string path)
-        {
-            string text = ReadFile(path);
-
-            StreamWriter strW = new StreamWriter($"{path}.bak{DateTime.Now.ToShortDateString()}{DateTime.Now.ToLongTimeString().Replace(":","")}");
-            strW.Write(text);
-            strW.Close();
-        }
+        }        
 
         private static void ChangeShadowResolution(string path, int quality)
         {
@@ -94,71 +86,21 @@ namespace XPlaneUtilsWPF
         }
         #endregion
 
-        #region
+        #region Сортировка scenery_pack.ini
         public static void SortSceneryPack()
         {
             if (!IsXplaneRunning)
             {
                 string path = @$"{RootPath}/Custom Scenery/scenery_packs.ini";
-                SortSP(path);
+                CreateBackupFile(path);
+                string sortedFile = ScenerySorter.SortFile(ReadFile(path));
+
+                StreamWriter strW = new StreamWriter(path, false);
+                strW.Write(sortedFile);
+                strW.Close();
             }
             else
                 throw new Exception("X-Plane должен быть закрыт!");
-        }
-
-        private static void SortSP(string path)
-        {
-            string file = ReadFile(path);
-
-            List<Note> notes = GroupByCategories(SeparateLines(file));
-        }
-
-        private static List<string> SeparateLines(string file)
-        {
-            string[] symbols = { "\r", "\n" };
-
-            List<string> res = file.Split(symbols[0]).ToList();
-
-            for (int i = 1; i < symbols.Length; i++)
-            {
-                List<string> lines = new List<string>();
-                foreach (string s in res)
-                {
-                    lines.AddRange(s.Split(symbols[i]));
-                }
-                res = lines;
-            }
-
-            while (res.IndexOf("") != -1)
-            {
-                res.RemoveAt(res.IndexOf(""));
-            }
-
-            return res;
-        }
-
-        private static List<Note> GroupByCategories(List<string> lines)
-        {
-
-        }
-
-        private static void DefaultSceneries(List<string> lines, List<Note> notes)
-        {
-            string[] defaultSceneries = { };
-        }
-
-        class Note
-        {
-            public string Line { get; set; }
-            public SceneryCategory Category { get; set; }
-        }
-
-        enum SceneryCategory
-        {
-            Airport,
-            Library,
-            Landmark,
-            Mash
         }
         #endregion
 
@@ -179,6 +121,15 @@ namespace XPlaneUtilsWPF
             {
                 throw new Exception("Не правильно выбран путь");
             }
+        }
+
+        private static void CreateBackupFile(string path)
+        {
+            string text = ReadFile(path);
+
+            StreamWriter strW = new StreamWriter($"{path}.bak{DateTime.Now.ToShortDateString()}{DateTime.Now.ToLongTimeString().Replace(":", "")}");
+            strW.Write(text);
+            strW.Close();
         }
         #endregion
     }
