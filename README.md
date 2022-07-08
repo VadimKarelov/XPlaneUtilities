@@ -4,4 +4,4 @@
 ### Возможности:
 :white_check_mark: Вывод ошибок из Log.txt    
 :white_check_mark: Улучшение качества теней    
-:black_square_button: Сортировка scenery_packs.ini (в разработке)
+:white_check_mark: Сортировка scenery_packs.ini (в разработке)

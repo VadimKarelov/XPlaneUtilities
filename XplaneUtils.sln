@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XPlaneUtilsWPF", "XPlaneUtilsWPF\XPlaneUtilsWPF.csproj", "{ED51F6F2-F69C-4317-A246-1819A43BD323}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "XPU", "XPU\XPU.vdproj", "{44A8E2AA-5C7E-44C4-A4E6-8734F9909993}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,8 @@ Global
 		{ED51F6F2-F69C-4317-A246-1819A43BD323}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED51F6F2-F69C-4317-A246-1819A43BD323}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED51F6F2-F69C-4317-A246-1819A43BD323}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44A8E2AA-5C7E-44C4-A4E6-8734F9909993}.Debug|Any CPU.ActiveCfg = Debug
+		{44A8E2AA-5C7E-44C4-A4E6-8734F9909993}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
