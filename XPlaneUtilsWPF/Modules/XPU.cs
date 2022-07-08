@@ -105,7 +105,7 @@ namespace XPlaneUtilsWPF
         #endregion
 
         #region Работа с файлами
-        private static string ReadFile(string path)
+        public static string ReadFile(string path)
         {
             try
             {

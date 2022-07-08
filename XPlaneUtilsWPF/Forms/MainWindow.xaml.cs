@@ -53,7 +53,14 @@ namespace XPlaneUtilsWPF
 
         private void SortSceneryPack_Click(object sender, RoutedEventArgs e)
         {
-            
+            try
+            {
+                new SceneryPackWindow().ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

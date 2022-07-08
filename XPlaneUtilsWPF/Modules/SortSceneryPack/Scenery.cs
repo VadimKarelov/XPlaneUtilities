@@ -12,6 +12,11 @@
             Type = type;
             Priority = priority;
         }
+
+        public override string ToString()
+        {
+            return $"{Type}:{Priority}:{Line}";
+        }
     }
 
     internal enum SceneryType

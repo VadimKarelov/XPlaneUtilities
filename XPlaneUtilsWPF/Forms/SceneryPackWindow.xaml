@@ -1,29 +1,37 @@
-﻿<Window x:Class="XPlaneUtilsWPF.Forms.ErrorsWindow"
+﻿<Window x:Class="XPlaneUtilsWPF.Forms.SceneryPackWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:XPlaneUtilsWPF.Forms"
         mc:Ignorable="d"
-        Title="Список ошибок" Style="{StaticResource defaultWindow}">
+        Title="Сортировка scenery_packs.ini" Style="{StaticResource defaultWindow}">
     <Window.Resources>
         <ResourceDictionary>
-            <Style TargetType="Button" BasedOn="{StaticResource defaultButton}"/>
+            <Style TargetType="Button" BasedOn="{StaticResource defaultButton}">
+
+                <Setter Property="Margin" Value="10,10,10,10"/>
+
+            </Style>
+
         </ResourceDictionary>
     </Window.Resources>
-
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        
+
         <StackPanel Orientation="Horizontal" Grid.Row="0">
-            <Button MinWidth="120" Click="LoadErrors_Click">
-                <TextBlock Text="Загрузить"/>
+            <Button MinWidth="120" Click="SortSceneryPacks_Click">
+                <TextBlock Text="Сортировка"/>
             </Button>
         </StackPanel>
 
-        <ListBox x:Name="listBox_ErrorsList" Grid.Row="1"/>
+        <TextBlock Text="Отсортированный файл:" Grid.Row="1"/>
+
+        <ListBox x:Name="listBox_ResultList" Grid.Row="2"/>
     </Grid>
 </Window>

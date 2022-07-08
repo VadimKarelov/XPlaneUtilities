@@ -19,7 +19,9 @@ namespace XPlaneUtilsWPF.Modules.SortSceneryPack
 
             FindDefaultAndKnownSceneries(lines, sceneries);
 
-            UseTemplates(lines, sceneries);  
+            UseTemplates(lines, sceneries);
+            
+            FindAirportsByCode(lines, sceneries);
 
             SetDefault(lines, sceneries);
 
@@ -87,6 +89,19 @@ SCENERY
             UseRule(lines, sceneries, InformationHolder.OSMTemplates.ToList(), SceneryType.OSM, SceneryPriority.Normal);
         }
 
+        private static void FindAirportsByCode(List<string> lines, List<Scenery> sceneries)
+        {
+            List<string> rules = new List<string>();
+
+            for (char c1 = 'A'; c1 <= 'Z'; c1++)
+                for (char c2 = 'A'; c2 <= 'Z'; c2++)
+                    for (char c3 = 'A'; c3 <= 'Z'; c3++)
+                        for (char c4 = 'A'; c4 <= 'Z'; c4++)
+                            rules.Add($"{c1}{c2}{c3}{c4}");
+
+            UseRule(lines, sceneries, rules, SceneryType.Airport, SceneryPriority.Normal);
+        }
+
         private static void SetDefault(List<string> lines, List<Scenery> sceneries)
         {
             // clone
@@ -102,26 +117,52 @@ SCENERY
         {
             foreach (string rule in ruleLines)
             {
-                int ind = lines.IndexOf(_template + rule);
+                //int ind = lines.IndexOf(_template + rule);
+                int ind = FindLineWithTemplate(lines, rule);
 
                 while (ind != -1)
                 {
                     sceneries.Add(new Scenery(lines[ind], type, priority));
                     lines.RemoveAt(ind);
-                    ind = lines.IndexOf(_template + rule);
+                    //ind = lines.IndexOf(_template + rule);
+                    ind = FindLineWithTemplate(lines, rule);
                 }
             }
-        } 
+        }
 
+        private static int FindLineWithTemplate(List<string> lines, string rule)
+        {
+            int ind = lines.IndexOf(_template + rule);
+
+            if (ind == -1)
+            {
+                // нужен для определения не только полностью совпадающих строк, но и содержащих шаблон из ruleLines
+                foreach (string line in lines)
+                {
+                    if (line.IndexOf(rule) != -1)
+                    {
+                        ind = lines.IndexOf(line);
+                    }
+                }
+            }
+
+            return ind;
+        }
+
+        /// <summary>
+        /// Формирует окончательный файл
+        /// </summary>
         private static string MakeFile(List<Scenery> sceneries)
         {
-            sceneries = sceneries.OrderBy(x => x.Line).OrderBy(x => x.Priority).OrderBy(x => x.Type).ToList();
+            sceneries = sceneries.OrderBy(x => x.Line).ToList();
+            sceneries = sceneries.OrderBy(x => x.Priority).ToList();
+            sceneries = sceneries.OrderBy(x => x.Type).ToList();
 
             string resFile = _fileHeader;
 
             foreach (Scenery scen in sceneries)
             {
-                resFile += scen.Line;
+                resFile += scen.Line + "\n";
             }
 
             return resFile;
