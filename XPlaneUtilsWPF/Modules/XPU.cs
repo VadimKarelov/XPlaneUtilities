@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using XPlaneUtilsWPF.Modules.SortSceneryPack;
 
 namespace XPlaneUtilsWPF
 {
@@ -66,16 +67,7 @@ namespace XPlaneUtilsWPF
             }
             else
                 throw new Exception("X-Plane должен быть закрыт!");
-        }
-
-        private static void CreateBackupFile(string path)
-        {
-            string text = ReadFile(path);
-
-            StreamWriter strW = new StreamWriter($"{path}.bak{DateTime.Now.ToShortDateString()}{DateTime.Now.ToLongTimeString().Replace(":","")}");
-            strW.Write(text);
-            strW.Close();
-        }
+        }        
 
         private static void ChangeShadowResolution(string path, int quality)
         {
@@ -94,8 +86,26 @@ namespace XPlaneUtilsWPF
         }
         #endregion
 
+        #region Сортировка scenery_pack.ini
+        public static void SortSceneryPack()
+        {
+            if (!IsXplaneRunning)
+            {
+                string path = @$"{RootPath}/Custom Scenery/scenery_packs.ini";
+                CreateBackupFile(path);
+                string sortedFile = ScenerySorter.SortFile(ReadFile(path));
+
+                StreamWriter strW = new StreamWriter(path, false);
+                strW.Write(sortedFile);
+                strW.Close();
+            }
+            else
+                throw new Exception("X-Plane должен быть закрыт!");
+        }
+        #endregion
+
         #region Работа с файлами
-        private static string ReadFile(string path)
+        public static string ReadFile(string path)
         {
             try
             {
@@ -111,6 +121,15 @@ namespace XPlaneUtilsWPF
             {
                 throw new Exception("Не правильно выбран путь");
             }
+        }
+
+        private static void CreateBackupFile(string path)
+        {
+            string text = ReadFile(path);
+
+            StreamWriter strW = new StreamWriter($"{path}.bak{DateTime.Now.ToShortDateString()}{DateTime.Now.ToLongTimeString().Replace(":", "")}");
+            strW.Write(text);
+            strW.Close();
         }
         #endregion
     }
