@@ -25,9 +25,11 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Grid.Row="0">
-            <Button MinWidth="120" Click="SortSceneryPacks_Click">
+            <Button MinWidth="120" Click="SortSceneryPacks_ClickAsync">
                 <TextBlock Text="Сортировка"/>
             </Button>
+            <TextBlock Text="Статус: " VerticalAlignment="Center"/>
+            <TextBlock x:Name="tb_Status" Text="Сортировка не выполнялась" VerticalAlignment="Center"/>
         </StackPanel>
 
         <TextBlock Text="Отсортированный файл:" Grid.Row="1"/>
