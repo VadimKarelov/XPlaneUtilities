@@ -21,9 +21,6 @@
 [Bb]uild/
 [Oo]bj/
 
-# Installers build results
-XPU/
-
 # Visual Studio 2015 cache/options directory
 .vs/
 
