@@ -23,12 +23,13 @@ namespace XPlaneUtilsWPF.Forms
         {
             InitializeComponent();
 
-            //SortSceneryPacks_Click(new object(), new RoutedEventArgs());
+            SortSceneryPacks_ClickAsync(new object(), new RoutedEventArgs());
         }
 
         private async void SortSceneryPacks_ClickAsync(object sender, RoutedEventArgs e)
         {
             tb_Status.Text = "Выполняется...";
+            bt_Sort.IsEnabled = false;
 
             await Task.Run(() => XPU.SortSceneryPack());
 
@@ -37,6 +38,7 @@ namespace XPlaneUtilsWPF.Forms
             listBox_ResultList.ItemsSource = XPU.ReadFile(@$"{XPU.RootPath}/Custom Scenery/scenery_packs.ini").Split("\n");
 
             tb_Status.Text = "Сортировка выполнена";
+            bt_Sort.IsEnabled = true;
         }
     }
 }

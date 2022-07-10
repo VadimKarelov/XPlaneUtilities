@@ -25,7 +25,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Grid.Row="0">
-            <Button MinWidth="120" Click="SortSceneryPacks_ClickAsync">
+            <Button x:Name="bt_Sort" MinWidth="120" Click="SortSceneryPacks_ClickAsync">
                 <TextBlock Text="Сортировка"/>
             </Button>
             <TextBlock Text="Статус: " VerticalAlignment="Center"/>
