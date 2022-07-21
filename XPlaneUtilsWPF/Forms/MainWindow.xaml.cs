@@ -1,5 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using XPlaneUtilsWPF.Forms;
 
@@ -10,9 +12,36 @@ namespace XPlaneUtilsWPF
     /// </summary>
     public partial class MainWindow : Window
     {
+        private string _pathToPath = "path.txt";
+
         public MainWindow()
         {
             InitializeComponent();
+            SetPath(LoadDefaultPath());
+        }
+
+        private string LoadDefaultPath()
+        {
+            try
+            {
+                using (StreamReader strR = new StreamReader(_pathToPath, false))
+                {
+                    return strR.ReadToEnd();
+                }
+            }
+            catch
+            {
+                return @"D:\";
+            }
+        }
+
+        private void SaveDefaultPath()
+        {
+            using (StreamWriter strW = new StreamWriter(_pathToPath, false))
+            {
+                strW.WriteAsync(XPU.RootPath);
+                strW.Close();
+            }
         }
 
         private void SetPath_Click(object sender, RoutedEventArgs e)
@@ -22,9 +51,15 @@ namespace XPlaneUtilsWPF
             OpenFileDialog f = new OpenFileDialog();
             if (f.ShowDialog() == true)
             {
-                XPU.RootPath = f.FileName.Remove(f.FileName.LastIndexOf("\\"));
-                tb_Path.Text = XPU.RootPath;
+                SetPath(f.FileName.Remove(f.FileName.LastIndexOf("\\")));                
             }
+        }
+
+        private void SetPath(string path)
+        {
+            XPU.RootPath = path;
+            tb_Path.Text = XPU.RootPath;
+            SaveDefaultPath();
         }
 
         private void ShowErrors_Click(object sender, RoutedEventArgs e)
