@@ -4,8 +4,8 @@
 ### Возможности:
 :white_check_mark: Вывод ошибок из Log.txt    
 :white_check_mark: Улучшение качества теней    
-:white_check_mark: Сортировка scenery_packs.ini
-:white_check_mark: Статистика LandingRate (если есть)
+:white_check_mark: Сортировка scenery_packs.ini   
+:white_check_mark: Статистика LandingRate (если есть)   
 
 ### Установка:
 1. Перейдите в раздел Releases
@@ -18,8 +18,8 @@ Utility for X-plane simulator.
 ### Features:
 :white_check_mark: Show errors from Log.txt    
 :white_check_mark: Improvement shadow quality    
-:white_check_mark: Sorting scenery_packs.ini
-:white_check_mark: LandingRate statistics
+:white_check_mark: Sorting scenery_packs.ini   
+:white_check_mark: LandingRate statistics   
 
 ### Installation:
 1. Go to "Releases"
