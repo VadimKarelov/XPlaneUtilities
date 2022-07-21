@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:XPlaneUtilsWPF"
         mc:Ignorable="d"
-        Title="XPU" Height="300" Width="400" Style="{StaticResource defaultWindow}">
+        Title="XPU" Height="350" Width="400" Style="{StaticResource defaultWindow}">
     <Window.Resources>
         <ResourceDictionary>
             <Style TargetType="Button" BasedOn="{StaticResource defaultButton}">
@@ -20,6 +20,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
@@ -42,6 +43,9 @@
         </Button>
         <Button Grid.Row="3" Click="TuneGraphics_Click">
             <TextBlock Text="Настройки теней"/>
+        </Button>   
+        <Button Grid.Row="4" Click="LandingRate_Click">
+            <TextBlock Text="Статистика LandingRate"/>
         </Button>
     </Grid>
 </Window>

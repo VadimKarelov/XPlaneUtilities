@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using XPlaneUtilsWPF.Modules.LandingRate;
 using XPlaneUtilsWPF.Modules.SortSceneryPack;
 
 namespace XPlaneUtilsWPF
@@ -99,6 +100,16 @@ namespace XPlaneUtilsWPF
                 strW.Write(sortedFile);
                 strW.Close();
             }
+            else
+                throw new Exception("X-Plane должен быть закрыт!");
+        }
+        #endregion
+
+        #region LandingRate
+        public static List<LandingRateRecord> GetLandingRateLog()
+        {
+            if (!IsXplaneRunning)
+                return LandingRateHandler.GetLog(ReadFile($"{RootPath}/LandingRate.log"));
             else
                 throw new Exception("X-Plane должен быть закрыт!");
         }

@@ -62,5 +62,17 @@ namespace XPlaneUtilsWPF
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private void LandingRate_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                new LandingRateWindow().ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }
