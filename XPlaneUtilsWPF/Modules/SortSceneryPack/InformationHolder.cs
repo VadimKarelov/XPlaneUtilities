@@ -84,11 +84,13 @@
 "XS_Library/"};
 
         private static string[] _meshTemplates = {"z_",
-            "zz_",
-            "zzz_",
-            "Z_",
-            "ZZ_",
-            "ZZZ_"};
+        "zz_",
+        "zzz_",
+        "Z_",
+        "ZZ_",
+        "ZZZ_",
+        "ZZZ ",
+        "zzz "};
 
         private static string[] _photoTemplates = {"Ortho",
         "ortho",
@@ -97,6 +99,12 @@
         "PHOTO"};
 
         private static string[] _osmTemplates = {"Landmarks",
-        "osm"};
+        "osm_",
+        "OSM_",
+        "_osm",
+        "_OSM",
+        "CITY",
+        "city",
+        "_Terrain"};
     }
 }
