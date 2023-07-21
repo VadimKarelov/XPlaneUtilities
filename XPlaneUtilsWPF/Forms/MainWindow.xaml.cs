@@ -109,5 +109,17 @@ namespace XPlaneUtilsWPF
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private void InstallAirac_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                new ImportAiracWindow().ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }

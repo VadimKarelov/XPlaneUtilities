@@ -13,6 +13,9 @@
     <Compile Update="Forms\GraphicsWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Forms\ImportAiracWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Forms\LandingRateWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -25,6 +28,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Forms\GraphicsWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Forms\ImportAiracWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Forms\LandingRateWindow.xaml">

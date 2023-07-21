@@ -1,9 +1,14 @@
-﻿using System;
+﻿using SharpCompress.Archives;
+using SharpCompress.Archives.Rar;
+using SharpCompress.Archives.Zip;
+using SharpCompress.Common;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using XPlaneUtilsWPF.Modules;
 using XPlaneUtilsWPF.Modules.LandingRate;
 using XPlaneUtilsWPF.Modules.SortSceneryPack;
 
@@ -22,6 +27,24 @@ namespace XPlaneUtilsWPF
             }
         }
 
+        private static SimulatorVersionEnum SimulatorVersion
+        {
+            get
+            {
+                string ver = RootPath.Remove(0, RootPath.Length - 2);
+
+                switch (ver) 
+                {
+                    case "10": return SimulatorVersionEnum.XPlane10;
+                    case "11": return SimulatorVersionEnum.XPlane11;
+                    case "12": return SimulatorVersionEnum.XPlane12;
+                    default: return SimulatorVersionEnum.XPlane10;
+                }
+            }
+        }
+
+        private static string TemporaryDirectory => Environment.CurrentDirectory + "\\temp";
+
         #region Получение списка ошибок
         public static List<string> GetErrors()
         {
@@ -33,7 +56,7 @@ namespace XPlaneUtilsWPF
 
         private static List<string> GetErrorsLines(string file)
         {
-            string[] errorsExample = { "Failed to find resource" , "ERROR", "Terrain radar plugin: found unsupported aircraft" };
+            string[] errorsExample = { "Failed to find resource", "ERROR", "Terrain radar plugin: found unsupported aircraft" };
 
             string[] lines = file.Split('\n');
             List<string> errors = new List<string>();
@@ -68,7 +91,7 @@ namespace XPlaneUtilsWPF
             }
             else
                 throw new Exception("X-Plane должен быть закрыт!");
-        }        
+        }
 
         private static void ChangeShadowResolution(string path, int quality)
         {
@@ -141,6 +164,89 @@ namespace XPlaneUtilsWPF
             StreamWriter strW = new StreamWriter($"{path}.bak{DateTime.Now.ToShortDateString()}{DateTime.Now.ToLongTimeString().Replace(":", "")}");
             strW.Write(text);
             strW.Close();
+        }
+        #endregion
+
+        #region AIRAC
+        public static void InstallAirac(string path)
+        {
+
+        }
+
+        private static void TryInstallGNSAirac(string path)
+        {
+            try
+            {
+                //using (RarArchive rarArchive = RarArchive.Open(path))
+                //{
+                //    ICollection<RarArchiveEntry> files = rarArchive.Entries;
+                //    RarArchiveEntry? zip = files.FirstOrDefault(x => x.Key.Contains("xplane_customdata_native_"));
+
+                //    zip.WriteToDirectory(TemporaryDirectory);
+
+                //    string zipFile = Directory.GetFiles(TemporaryDirectory).First();
+
+                //    using (ZipArchive zipArchive = ZipArchive.Open(zipFile))
+                //    {
+
+                //    }
+                //}
+            }
+            catch
+            {
+
+            }
+        }
+
+        public static string GetActualCycle()
+        {
+            DateTime today = DateTime.Now.ToUniversalTime();
+            int year = today.Year % 1000;
+            int month = today.DayOfYear / 28 + ((today.DayOfYear % 28 == 0) ? 1 : 0);
+            string cycle = Format(year) + Format(month);
+            return cycle;
+        }
+
+        private static string Format(int n)
+        {
+            if (n > 10)
+                return n.ToString();
+            else
+                return "0" + n.ToString();
+        }
+
+        public static string GetInstalledAiracCycle()
+        {
+            string path = $"{RootPath}\\Custom Data\\cycle_info.txt";
+
+            try
+            {
+                string file = File.ReadAllText(path);
+                string[] lines = file.Split('\n').SelectMany(x => x.Split(':')).ToArray();
+                string res = lines[1].Replace('\r', ' ');
+                return res;
+            }
+            catch
+            {
+                return "Не установлено";
+            }
+        }
+
+        public static string GetInstalledGNSAiracCycle()
+        {
+            string path = $"{RootPath}\\Custom Data\\GNS430\\navdata\\cycle_info.txt";
+
+            try
+            {
+                string file = File.ReadAllText(path);
+                string[] lines = file.Split('\n').SelectMany(x => x.Split(':')).ToArray();
+                string res = lines[1].Replace('\r', ' ');
+                return res;
+            }
+            catch
+            {
+                return "Не установлено";
+            }
         }
         #endregion
     }

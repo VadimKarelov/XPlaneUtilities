@@ -24,6 +24,7 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal">
@@ -46,6 +47,9 @@
         </Button>   
         <Button Grid.Row="4" Click="LandingRate_Click">
             <TextBlock Text="Статистика LandingRate"/>
+        </Button>
+        <Button Grid.Row="5" Click="InstallAirac_Click">
+            <TextBlock Text="Установка AIRAC"/>
         </Button>
     </Grid>
 </Window>
