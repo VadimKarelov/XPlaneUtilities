@@ -4,6 +4,7 @@ using SharpCompress.Archives.Zip;
 using SharpCompress.Common;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -11,6 +12,7 @@ using System.Text;
 using XPlaneUtilsWPF.Modules;
 using XPlaneUtilsWPF.Modules.LandingRate;
 using XPlaneUtilsWPF.Modules.SortSceneryPack;
+using static System.Net.WebRequestMethods;
 
 namespace XPlaneUtilsWPF
 {
@@ -33,7 +35,7 @@ namespace XPlaneUtilsWPF
             {
                 string ver = RootPath.Remove(0, RootPath.Length - 2);
 
-                switch (ver) 
+                switch (ver)
                 {
                     case "10": return SimulatorVersionEnum.XPlane10;
                     case "11": return SimulatorVersionEnum.XPlane11;
@@ -43,7 +45,18 @@ namespace XPlaneUtilsWPF
             }
         }
 
-        private static string TemporaryDirectory => Environment.CurrentDirectory + "\\temp";
+        private static string TemporaryDirectory
+        {
+            get
+            {
+                string temp = Environment.CurrentDirectory + "\\temp";
+                if (!Directory.Exists(temp))
+                {
+                    Directory.CreateDirectory(temp);
+                }
+                return temp;
+            }
+        }
 
         #region Получение списка ошибок
         public static List<string> GetErrors()
@@ -168,52 +181,152 @@ namespace XPlaneUtilsWPF
         #endregion
 
         #region AIRAC
-        public static void InstallAirac(string path)
+        public static string InstallAllAirac(string path)
         {
+            CleanTemporaryDirectory();
 
+            string messageToReturn = "";
+
+            messageToReturn += $"Установка GNS430: {TryInstallGNSAirac(path)}\n";
+
+            string simVer = "";
+            switch (SimulatorVersion)
+            {
+                case SimulatorVersionEnum.XPlane10: simVer = "XPlane10"; break;
+                case SimulatorVersionEnum.XPlane11: simVer = "XPlane11"; break;
+                case SimulatorVersionEnum.XPlane12: simVer = "XPlane12"; break;
+            }
+
+            messageToReturn += $"Установка дефолтного AIRAC ({simVer}): {TryInstallXPlaneAirac(path)}\n";
+
+            return messageToReturn;
         }
 
-        private static void TryInstallGNSAirac(string path)
+        private static bool TryInstallGNSAirac(string path)
         {
             try
             {
-                //using (RarArchive rarArchive = RarArchive.Open(path))
-                //{
-                //    ICollection<RarArchiveEntry> files = rarArchive.Entries;
-                //    RarArchiveEntry? zip = files.FirstOrDefault(x => x.Key.Contains("xplane_customdata_native_"));
+                // Открываем архив со всеми папками
+                using (RarArchive mainArchive = RarArchive.Open(path))
+                {
+                    ICollection<RarArchiveEntry> filesFromMainArchive = mainArchive.Entries;
+                    RarArchiveEntry? requiredGNSArchiveEntry = filesFromMainArchive.FirstOrDefault(x => x.Key.Contains("xplane_customdata_native_"));
 
-                //    zip.WriteToDirectory(TemporaryDirectory);
+                    // Вытаскиваем файл из архива во временную папку
+                    requiredGNSArchiveEntry.WriteToDirectory(TemporaryDirectory, new ExtractionOptions() { Overwrite = true });
+                }
 
-                //    string zipFile = Directory.GetFiles(TemporaryDirectory).First();
+                // Получаем название архива
+                string archiveWithDataPath = Directory.GetFiles(TemporaryDirectory).First();
 
-                //    using (ZipArchive zipArchive = ZipArchive.Open(zipFile))
-                //    {
+                string installationPath = $"{RootPath}\\Custom Data\\GNS430";
 
-                //    }
-                //}
+                if (!Directory.Exists(installationPath))
+                    Directory.CreateDirectory(installationPath);
+
+                // Извлекаем данные в требуемую папку
+                using (ZipArchive archiveWithData = ZipArchive.Open(archiveWithDataPath))
+                {
+                    archiveWithData.WriteToDirectory(installationPath, new ExtractionOptions() { Overwrite = true, ExtractFullPath = true });
+                }
+
+                CleanTemporaryDirectory();
+                return true;
             }
             catch
             {
-
+                CleanTemporaryDirectory();
+                return false;
             }
+        }
+
+        private static bool TryInstallXPlaneAirac(string path)
+        {
+            try
+            {
+                string requiredArchiveKey = "";
+                switch (XPU.SimulatorVersion)
+                {
+                    case SimulatorVersionEnum.XPlane10: requiredArchiveKey = "xplane10_native_"; break;
+                    case SimulatorVersionEnum.XPlane11: requiredArchiveKey = "xplane11_native_"; break;
+                    case SimulatorVersionEnum.XPlane12: requiredArchiveKey = "xplane12_native_"; break;
+                }
+
+                // Открываем архив со всеми папками
+                using (RarArchive mainArchive = RarArchive.Open(path))
+                {
+                    ICollection<RarArchiveEntry> filesFromMainArchive = mainArchive.Entries;
+                    RarArchiveEntry? requiredGNSArchiveEntry = filesFromMainArchive.FirstOrDefault(x => x.Key.Contains(requiredArchiveKey));
+
+                    // Вытаскиваем файл из архива во временную папку
+                    requiredGNSArchiveEntry.WriteToDirectory(TemporaryDirectory, new ExtractionOptions() { Overwrite = true });
+                }
+
+                // Получаем название архива
+                string archiveWithDataPath = Directory.GetFiles(TemporaryDirectory).First();
+
+                string installationPath = $"{RootPath}\\Custom Data";
+
+                if (!Directory.Exists(installationPath))
+                    Directory.CreateDirectory(installationPath);
+
+                // Извлекаем данные в требуемую папку
+                using (ZipArchive archiveWithData = ZipArchive.Open(archiveWithDataPath))
+                {
+                    archiveWithData.WriteToDirectory(installationPath, new ExtractionOptions() { Overwrite = true, ExtractFullPath = true });
+                }
+
+                CleanTemporaryDirectory();
+                return true;
+            }
+            catch
+            {
+                CleanTemporaryDirectory();
+                return false;
+            }
+        }
+
+        private static void CleanTemporaryDirectory()
+        {
+            Directory.Delete(TemporaryDirectory, true);
         }
 
         public static string GetActualCycle()
         {
             DateTime today = DateTime.Now.ToUniversalTime();
-            int year = today.Year % 1000;
-            int month = today.DayOfYear / 28 + ((today.DayOfYear % 28 == 0) ? 1 : 0);
-            string cycle = Format(year) + Format(month);
-            return cycle;
+            // Начало отсчета циклов от 2 Jan 2020 (Cycle 2001)
+            DateTime currentCycleDate = new DateTime(2020, 01, 02);
+            int currentCycle = 2001;
+
+            while (currentCycleDate < today.AddDays(-28))
+            {
+                currentCycleDate = currentCycleDate.AddDays(28);
+
+                if (currentCycleDate.Month == 1 && currentCycleDate.Day <= 28)
+                {
+                    // январь
+
+                    // увеличиваем год
+                    currentCycle += 100;
+                    //убираем месяцы
+                    currentCycle = (currentCycle / 100) * 100 + 1;
+                }                
+                else
+                {
+                    currentCycle += 1;
+                }
+            }
+
+            return currentCycle.ToString();
         }
 
-        private static string Format(int n)
-        {
-            if (n > 10)
-                return n.ToString();
-            else
-                return "0" + n.ToString();
-        }
+        //private static string Format(int n)
+        //{
+        //    if (n > 10)
+        //        return n.ToString();
+        //    else
+        //        return "0" + n.ToString();
+        //}
 
         public static string GetInstalledAiracCycle()
         {
@@ -221,7 +334,7 @@ namespace XPlaneUtilsWPF
 
             try
             {
-                string file = File.ReadAllText(path);
+                string file = XPU.ReadFile(path);
                 string[] lines = file.Split('\n').SelectMany(x => x.Split(':')).ToArray();
                 string res = lines[1].Replace('\r', ' ');
                 return res;
@@ -238,7 +351,7 @@ namespace XPlaneUtilsWPF
 
             try
             {
-                string file = File.ReadAllText(path);
+                string file = XPU.ReadFile(path);
                 string[] lines = file.Split('\n').SelectMany(x => x.Split(':')).ToArray();
                 string res = lines[1].Replace('\r', ' ');
                 return res;
